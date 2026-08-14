@@ -1,24 +1,78 @@
 import { createFileRoute } from "@tanstack/react-router";
+import { useState } from "react";
+import { AppShell } from "@/components/study/AppShell";
+import { NotesForm } from "@/components/study/NotesForm";
+import { FlashcardsScreen } from "@/components/study/FlashcardsScreen";
+import { QuizScreen } from "@/components/study/QuizScreen";
+import { ResultsScreen } from "@/components/study/ResultsScreen";
+import type { StudyKit } from "@/data/studyKit";
+import { generateStudyKit } from "@/services/studyKitService";
 
-// No head() here: the home route inherits title/description/og/twitter from
-// __root.tsx, and ships no og:image so serve-time hosting can inject the
-// project's social preview (explicit og:image or latest screenshot).
 export const Route = createFileRoute("/")({
+  head: () => ({
+    meta: [
+      { title: "REVIXA — Turn your notes into knowledge you can test" },
+      {
+        name: "description",
+        content:
+          "REVIXA turns your study notes into flashcards and a multiple-choice quiz so you can test what you actually remember.",
+      },
+      { property: "og:title", content: "REVIXA — Study kits from your notes" },
+      {
+        property: "og:description",
+        content: "Paste your notes and get instant flashcards and a quiz to test your recall.",
+      },
+    ],
+  }),
   component: Index,
 });
 
-// IMPORTANT: Replace this placeholder. See ./README.md for routing conventions.
+type Step = "landing" | "flashcards" | "quiz" | "results";
+
 function Index() {
+  const [step, setStep] = useState<Step>("landing");
+  const [isLoading, setIsLoading] = useState(false);
+  const [kit, setKit] = useState<StudyKit | null>(null);
+  const [score, setScore] = useState(0);
+
+  async function handleGenerate(notes: string) {
+    setIsLoading(true);
+    try {
+      const result = await generateStudyKit(notes);
+      setKit(result);
+      setStep("flashcards");
+    } finally {
+      setIsLoading(false);
+    }
+  }
+
   return (
-    <div
-      className="flex min-h-screen items-center justify-center"
-      style={{ backgroundColor: "#fcfbf8" }}
-    >
-      <img
-        data-lovable-blank-page-placeholder="REMOVE_THIS"
-        src="https://cdn.gpteng.co/blank-app-v1.svg"
-        alt="Your app will live here!"
-      />
-    </div>
+    <AppShell>
+      {step === "landing" || !kit ? (
+        <NotesForm onGenerate={handleGenerate} isLoading={isLoading} />
+      ) : step === "flashcards" ? (
+        <FlashcardsScreen cards={kit.flashcards} onContinue={() => setStep("quiz")} />
+      ) : step === "quiz" ? (
+        <QuizScreen
+          key={score + step}
+          questions={kit.quiz}
+          onFinish={(correct) => {
+            setScore(correct);
+            setStep("results");
+          }}
+        />
+      ) : (
+        <ResultsScreen
+          correct={score}
+          total={kit.quiz.length}
+          onRetry={() => setStep("quiz")}
+          onNewKit={() => {
+            setKit(null);
+            setScore(0);
+            setStep("landing");
+          }}
+        />
+      )}
+    </AppShell>
   );
 }
