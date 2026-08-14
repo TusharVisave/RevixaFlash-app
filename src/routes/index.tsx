@@ -34,6 +34,7 @@ function Index() {
   const [isLoading, setIsLoading] = useState(false);
   const [kit, setKit] = useState<StudyKit | null>(null);
   const [score, setScore] = useState(0);
+  const [attempt, setAttempt] = useState(0);
 
   async function handleGenerate(notes: string) {
     setIsLoading(true);
@@ -54,7 +55,7 @@ function Index() {
         <FlashcardsScreen cards={kit.flashcards} onContinue={() => setStep("quiz")} />
       ) : step === "quiz" ? (
         <QuizScreen
-          key={score + step}
+          key={attempt}
           questions={kit.quiz}
           onFinish={(correct) => {
             setScore(correct);
@@ -65,7 +66,10 @@ function Index() {
         <ResultsScreen
           correct={score}
           total={kit.quiz.length}
-          onRetry={() => setStep("quiz")}
+          onRetry={() => {
+            setAttempt((n) => n + 1);
+            setStep("quiz");
+          }}
           onNewKit={() => {
             setKit(null);
             setScore(0);
