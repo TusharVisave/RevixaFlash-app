@@ -23,7 +23,7 @@ export const generateStudyKitFn = createServerFn({ method: "POST" })
 
     try {
       const result = streamText({
-        model: gateway("google/gemini-3-flash"),
+        model: gateway("google/gemini-3.6-flash"),
         output: Output.object({ schema: aiStudyKitSchema }),
         prompt: buildStudyKitPrompt(data.notes),
       });
