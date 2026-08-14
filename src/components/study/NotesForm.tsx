@@ -3,17 +3,19 @@ import { Loader2, Wand2 } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Textarea } from "@/components/ui/textarea";
 import { MAX_WORDS } from "@/data/studyKit";
-import { countWords } from "@/services/studyKitService";
+import { countWords } from "@/data/studyKitSchema";
 
 interface NotesFormProps {
   onGenerate: (notes: string) => void;
   isLoading: boolean;
+  submitError?: string | null;
 }
 
-export function NotesForm({ onGenerate, isLoading }: NotesFormProps) {
+export function NotesForm({ onGenerate, isLoading, submitError }: NotesFormProps) {
   const [notes, setNotes] = useState("");
   const [error, setError] = useState<string | null>(null);
 
+  const shownError = error ?? submitError ?? null;
   const words = countWords(notes);
   const overLimit = words > MAX_WORDS;
 
@@ -54,7 +56,7 @@ export function NotesForm({ onGenerate, isLoading }: NotesFormProps) {
             if (error) setError(null);
           }}
           placeholder="Paste lecture notes, a textbook chapter, or your own summary…"
-          aria-invalid={Boolean(error) || overLimit}
+          aria-invalid={Boolean(shownError) || overLimit}
           aria-describedby="notes-meta"
           className="min-h-56 resize-y bg-surface/70 text-sm leading-relaxed"
         />
@@ -68,9 +70,9 @@ export function NotesForm({ onGenerate, isLoading }: NotesFormProps) {
               {words.toLocaleString()} / {MAX_WORDS.toLocaleString()} words
             </span>
           </span>
-          {error ? (
+          {shownError ? (
             <span role="alert" className="font-medium text-destructive">
-              {error}
+              {shownError}
             </span>
           ) : null}
         </div>

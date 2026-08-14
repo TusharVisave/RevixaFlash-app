@@ -35,13 +35,21 @@ function Index() {
   const [kit, setKit] = useState<StudyKit | null>(null);
   const [score, setScore] = useState(0);
   const [attempt, setAttempt] = useState(0);
+  const [error, setError] = useState<string | null>(null);
 
   async function handleGenerate(notes: string) {
     setIsLoading(true);
+    setError(null);
     try {
       const result = await generateStudyKit(notes);
       setKit(result);
       setStep("flashcards");
+    } catch (caught) {
+      setError(
+        caught instanceof Error && caught.message
+          ? caught.message
+          : "Something went wrong while generating your study kit. Please try again.",
+      );
     } finally {
       setIsLoading(false);
     }
@@ -50,7 +58,7 @@ function Index() {
   return (
     <AppShell>
       {step === "landing" || !kit ? (
-        <NotesForm onGenerate={handleGenerate} isLoading={isLoading} />
+        <NotesForm onGenerate={handleGenerate} isLoading={isLoading} submitError={error} />
       ) : step === "flashcards" ? (
         <FlashcardsScreen cards={kit.flashcards} onContinue={() => setStep("quiz")} />
       ) : step === "quiz" ? (
