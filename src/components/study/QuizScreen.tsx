@@ -20,7 +20,7 @@ export function QuizScreen({ questions, onFinish }: QuizScreenProps) {
   const [selected, setSelected] = useState<number | null>(null);
   const [correctCount, setCorrectCount] = useState(0);
 
-  const question = questions[index];
+  const question = questions[index]!;
   const isLast = index === questions.length - 1;
   const answered = selected !== null;
   const isCorrect = selected === question.correctIndex;

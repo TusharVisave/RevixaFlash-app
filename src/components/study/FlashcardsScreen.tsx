@@ -13,7 +13,7 @@ export function FlashcardsScreen({ cards, onContinue }: FlashcardsScreenProps) {
   const [index, setIndex] = useState(0);
   const [flipped, setFlipped] = useState(false);
 
-  const card = cards[index];
+  const card = cards[index]!;
   const progress = ((index + 1) / cards.length) * 100;
 
   function go(step: number) {
