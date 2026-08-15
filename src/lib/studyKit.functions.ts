@@ -46,6 +46,6 @@ export const generateStudyKitFn = createServerFn({ method: "POST" })
         throw new Error("AI credits exhausted. Please add credits to continue.");
       }
       console.error("generateStudyKitFn failed", error);
-      throw new Error(message || "Failed to generate your study kit. Please try again.");
+      throw new Error("Failed to generate your study kit. Please try again.");
     }
   });
