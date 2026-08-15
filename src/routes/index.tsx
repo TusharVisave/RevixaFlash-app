@@ -17,10 +17,10 @@ export const Route = createFileRoute("/")({
         content:
           "REVIXA turns your study notes into flashcards and a multiple-choice quiz so you can test what you actually remember.",
       },
-      { property: "og:title", content: "REVIXA — Study kits from your notes" },
+      { property: "og:title", content: "REVIXA — Turn your notes into knowledge you can test" },
       {
         property: "og:description",
-        content: "Paste your notes and get instant flashcards and a quiz to test your recall.",
+        content: "REVIXA turns your study notes into flashcards and a multiple-choice quiz so you can test what you actually remember.",
       },
     ],
   }),

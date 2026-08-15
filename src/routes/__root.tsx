@@ -80,17 +80,21 @@ export const Route = createRootRouteWithContext<{ queryClient: QueryClient }>()(
       { title: "REVIXA — Turn your notes into knowledge you can test" },
       {
         name: "description",
-        content: "REVIXA turns study notes into flashcards and quizzes.",
+        content: "REVIXA turns your study notes into flashcards and a multiple-choice quiz so you can test what you actually remember.",
       },
       
-      { property: "og:title", content: "REVIXA" },
+      { property: "og:title", content: "REVIXA — Turn your notes into knowledge you can test" },
       {
         property: "og:description",
-        content: "Study kits generated from your notes.",
+        content: "REVIXA turns your study notes into flashcards and a multiple-choice quiz so you can test what you actually remember.",
       },
       { property: "og:type", content: "website" },
       { name: "twitter:card", content: "summary_large_image" },
       { name: "twitter:site", content: "@Lovable" },
+      { name: "twitter:title", content: "REVIXA — Turn your notes into knowledge you can test" },
+      { name: "twitter:description", content: "REVIXA turns your study notes into flashcards and a multiple-choice quiz so you can test what you actually remember." },
+      { property: "og:image", content: "https://storage.googleapis.com/gpt-engineer-file-uploads/lSZWjlizE9dFoVrbM6eesOXCdQ83/social-images/social-1786796365434-social-image.webp" },
+      { name: "twitter:image", content: "https://storage.googleapis.com/gpt-engineer-file-uploads/lSZWjlizE9dFoVrbM6eesOXCdQ83/social-images/social-1786796365434-social-image.webp" },
     ],
     links: [
       {
@@ -103,7 +107,6 @@ export const Route = createRootRouteWithContext<{ queryClient: QueryClient }>()(
         rel: "stylesheet",
         href: "https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@500;600;700&family=DM+Sans:wght@400;500;600&display=swap",
       },
-      { rel: "icon", href: "/favicon.ico", type: "image/x-icon" },
     ],
   }),
   shellComponent: RootShell,
